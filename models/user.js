@@ -13,6 +13,6 @@ userSchema = new Schema( {
 		default: Date.now
 	}
 }),
-User = mongoose.model('User', userSchema);
+User1 = mongoose.model('User1', userSchema);
 
-module.exports = User;
+module.exports = User1;
