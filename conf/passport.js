@@ -1,6 +1,7 @@
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 // const mongoose = require('mongoose')
-const User = require('../models/User1')
+const User = require('../models/User1');
 
 module.exports = function (passport) {
   passport.use(
@@ -8,8 +9,8 @@ module.exports = function (passport) {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: '/auth/google/callback',
-				passReqToCallback: true
+        callbackURL: '/auth/google/glogin',
+        passReqToCallback: true
       },
       async (accessToken, refreshToken, profile, done) => {
         //get the user data from google 
@@ -49,7 +50,27 @@ module.exports = function (passport) {
   // used to deserialize the user
   passport.deserializeUser((id, done) => {
     User.findById(id, (err, user) => {
-			done(err, user);
-		});
+      done(err, user);
+    });
   })
+
+  passport.use(new FacebookStrategy({
+    clientID: '709475173817762',
+    clientSecret: '26e062a32cca1b362fdcbb685ce0bb01',
+    callbackURL: "http://localhost:4000/auth/facebook/fblogin"
+  },
+    function (accessToken, refreshToken, profile, cb) {
+      User.findOrCreate({
+        facebookId: profile.id,
+        displayName: profile.displayName,
+        firstName: profile.name.givenName,
+        lastName: profile.name.familyName,
+        image: profile.photos[0].value,
+        email: profile.emails[0].value
+      }, function (err, user) {
+        return cb(err, user);
+      });
+    }
+  ));
+
 }

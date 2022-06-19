@@ -2,13 +2,16 @@ const express = require('express');
 const router = express.Router();
 const { ensureAuth, ensureGuest } = require('../routes/auth')
 const User = require('../models/user');
+const User1 = require('../models/User1');
 
 const passport = require("passport");
 const { route } = require('.');
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookStrategy = require("passport-facebook");
 router.get('/', (req, res, next) => {
 	return res.render('index.ejs');
 });
+
 
 router.post('/', (req, res, next) => {
 	let personInfo = req.body;
@@ -85,7 +88,31 @@ router.get('/profile', (req, res, next) => {
 			return res.render('data.ejs', { "name": data.username, "email": data.email });
 		}
 	});
+	// User.findOne({ googleId: req.session.userId }, (err, data) => {
+	// 	if (!data) {
+	// 		res.redirect('/');
+	// 	} else {
+	// 		return res.render('data.ejs', { "name": data.displayName, "email": data.email });
+	// 	}
+	// });
+	// User.findOne({ facebookId: req.session.userId }, (err, data) => {
+	// 	if (!data) {
+	// 		res.redirect('/');
+	// 	} else {
+	// 		return res.render('data.ejs', { "name": data.displayName, "email": data.email });
+	// 	}
+	// });
 });
+router.get('/fblogin' , (req,res)=>{
+    res.render('profile' , {
+         user:req.user1.displayName
+}
+)});
+router.get('/glogin' , (req,res)=>{
+    res.render('profile' , {
+         user:req.user1.displayName , 
+}
+)});
 
 router.get('/logout', (req, res, next) => {
 	if (req.session) {

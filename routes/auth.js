@@ -1,5 +1,7 @@
 const express = require('express')
 const passport = require('passport')
+const findOrCreate = require("mongoose-findorcreate");
+const FacebookStrategy=require('passport-facebook').Strategy;
 const router = express.Router()
 
 
@@ -7,15 +9,24 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['profile','
 
 
 router.get(
-  '/auth/google/callback',
+  '/auth/google/glogin',
   passport.authenticate('google', { 
-		successRedirect: '/auth/google/success',
-    failureRedirect: '/auth/google/failure'
+		successRedirect: '/auth/google/glogin',
+    failureRedirect: '/index'
 	 }),
   (req, res, next) => {
-    res.redirect('/log')
+    res.redirect('/glogin')
   }
 )
+router.get('/auth/facebook',
+  passport.authenticate('facebook'));
+
+router.get('/auth/facebook/fblogin',
+  passport.authenticate('facebook', { failureRedirect: '/index' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/fblogin');
+  });
 
 router.get('/logout', (req, res) => {
   req.logout()

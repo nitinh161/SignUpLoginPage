@@ -102,10 +102,14 @@
             
           </form>
         </div>
-        <form action="/auth/google" class="inline">
-          <button class="btn btn-outline-dark float-left submit-button btn btn-success w-100 btn btn-lg btn-primary" style="text-transform:none"> <img width="20px" style="margin-bottom:3px; margin-right:5px" alt="Google sign-in" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
-            Login with Google</button>
-      </form>
+        <button onclick="window.location.href='/auth/facebook'" class="loginBtn loginBtn--facebook">
+          Login with Facebook
+        </button>
+        
+        <button onclick="window.location.href='/auth/google'" class="loginBtn loginBtn--google">
+          Login with Google
+        </button>
+      
       
         
         <div class="mssg bg-danger">
